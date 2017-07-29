@@ -8,6 +8,12 @@
   "dependencies": {
     "express": "*",
     "jade": "*",
+    "serve-favicon": "*",
+    "serve-static": "*",
+    "body-parser": "*",
+    "morgan": "*",
+    "errorhandler": "*",
+    "method-override": "*",
     "pg": "*",
 	"http": "*",
 	"cfenv": "*",

@@ -6,6 +6,12 @@
 //List down all the required dependencies for the Node-Express app
 var express = require('express'); 
 var app = express();
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var methodOverride = require('method-override');
+var bodyParser = require('body-parser');
+var errorHandler = require('errorhandler');
+var statics = require('serve-static');
 var http  = require("http");
 var path = require("path");
 var cfenv = require("cfenv");
@@ -32,14 +38,14 @@ var tweet = require( './services/tweet-review');
 app.set('port', process.env.PORT || 6000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
+app.use(logger('dev'));
+app.use(bodyParser());
+app.use(methodOverride());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+//app.use(app.router);
+app.use(statics(path.join(__dirname, 'public')));
 
 // development only debug 
 if ('development' == app.get('env')) {
@@ -130,7 +136,7 @@ app.post("/hotels", function (req, res) {
   });
   
   // Get id of the selected restaurant
-  client.query('SELECT rest_id FROM restuarants WHERE (rest_name = $1 AND location = $2)',[name,loc], function(err, result1) {
+  client.query('SELECT rest_id FROM restaurants WHERE (rest_name = $1 AND location = $2)',[name,loc], function(err, result1) {
   	    if (err) {
   	      return console.error('error running query', err);
   	    }
@@ -138,7 +144,7 @@ app.post("/hotels", function (req, res) {
   	    var id = JSON.stringify(result1.rows[0].rest_id);
   	    
   	    // Get the current number of reviews
-  	  	client.query('SELECT num_reviews FROM restuarants WHERE rest_id = $1',[id], function(err, result2) {
+  	  	client.query('SELECT num_reviews FROM restaurants WHERE rest_id = $1',[id], function(err, result2) {
   	  	    if (err) {
   	  	      return console.error('error running query', err);
   	  	    }
@@ -170,7 +176,7 @@ app.post("/hotels", function (req, res) {
   	  	    	}
   	  	    	
   	  	    	// Update the new rating and new review number into PostgreSQL
-  	  	    	client.query('UPDATE restuarants SET num_reviews = $1, rating = $2 WHERE rest_id = $3',[revnum, rate, id], function(err, result3) {
+  	  	    	client.query('UPDATE restaurants SET num_reviews = $1, rating = $2 WHERE rest_id = $3',[revnum, rate, id], function(err, result3) {
   	    	  		if (err) {
   	    	  	   		return console.error('error running query', err);
   	    	  	   	}
