@@ -1,0 +1,16 @@
+doctype html
+html(style="background-image:url('/images/table.png');")
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    .Foodie_header_wrapper
+      .Foodie_header_inner
+        .Foodie_header
+          .logo
+            a(href='/')
+              img(border='0', alt='Foodie', src='/images/logo.png')
+    .Foodie_body_wrapper
+      .Foodie_body
+        .Foodie_body_inner
+          block content

@@ -1,0 +1,57 @@
+extends layout
+
+block content
+  .contactPage_title(text-align='center') Review Form
+    .form_wrapper
+      form(method='post', action='/hotels')
+        fieldset
+          legend Restaurant detail
+          .contactForm_tr
+            .contactForm_td1 Name
+            .contactForm_tdMiddle : 
+            .contactForm_td2
+              input#name.Personal-input(name='name', type='text', value=name, readonly='true')
+          .contactForm_tr
+            .contactForm_td1 Locality
+            .contactForm_tdMiddle : 
+            .contactForm_td2
+              input.Personal-input(name='locality', type='text', maxlength='30', value=locality, readonly='true')
+        fieldset
+          legend Reviewer detail
+          .contactForm_tr
+            .contactForm_td1 Name
+            .contactForm_tdMiddle : 
+            .contactForm_td2
+              input#name.Personal-input(name='username', type='text', value='')
+          .contactForm_tr
+            .contactForm_td1 Email
+            .contactForm_tdMiddle : 
+            .contactForm_td2
+              input.Personal-input(name='email', type='text', maxlength='30')
+        fieldset
+          legend What do you feel about this restaurant :
+          .massage-box
+            textarea.massage-textFild(name='feedback', cols='30', rows='8') Enter your review here...
+          .contactForm_tr
+            .contactForm_td1 Rating
+            .contactForm_tdMiddle : 
+            .contactForm_td2
+              select.rating-input(name='ratinginput')
+                option(value='1') 1
+                option(value='2') 2
+                option(value='3') 3
+                option(value='4') 4
+                option(value='5') 5
+        .form-button(style='margin-left: 100px; margin-right: 10px;')
+          input#Submit.submit_btn(type='image', border='0', name='submit', alt='Submit', src='/images/submit_btn.png')
+        .form-button
+          input#Submit.clear_btn(type='image', border='0', name='clear', alt='clear', src='/images/clear_btn.png')
+    .reachus_wrapper
+      .reach_txt
+        .reachusTitle  WELCOME TO SAPTECHED 2017: 
+        .reachuslable  CF Backing services Hands-on session
+    br
+    br
+    .reachus_wrapper1
+      .reach_icon
+        img(border='0', alt='FoodieReview', src='/images/review.png')

@@ -1,0 +1,48 @@
+extends layout
+block content
+  script(src='/javascripts/jquery-3.2.1.js')
+  script.
+    $(document).ready(function () {
+    $("input#radio[type='radio']").on("change", function(){
+      var name = $(this).parent().next('td').text();
+      var locality= $(this).parent().next('td').next('td').next('td').text();
+      if (name) {
+        if (locality) {
+          $("#writelink").attr("hidden", false);
+          $("#writelink").attr("href", "hotels/new?name="+name+"&locality="+locality);
+          $("#seelink").attr("hidden", false);
+          $("#seelink").attr("href", "hotels/reviews?name="+name);
+        };
+      };
+    });
+    });
+  h2 List of Restaurants
+    table#hotelList
+      thead
+        tr
+          td 
+          td Name
+          td Cuisine
+          td Locality
+          td Number of Reviews
+          td Rating
+      tbody
+        - each hotel in hotels.rows
+          tr
+            td
+              input#radio(type='radio', name='radioselect')
+            td #{hotel.rest_name}
+            td #{hotel.cuisine}
+            td #{hotel.location}
+            td #{hotel.num_reviews}
+            td #{hotel.rating}
+    br
+
+  a#writelink(href="hotels/new", hidden="true") Write a review
+  
+  br
+  
+  br
+  
+  a#seelink(href="hotels/reviews", hidden="true") See reviews
+  
