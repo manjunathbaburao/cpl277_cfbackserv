@@ -1,5 +1,5 @@
 /**
- * http://usejsdoc.org/
+ * Service to post tweets to twitter
  */
 
 exports.posttweet = function(){
