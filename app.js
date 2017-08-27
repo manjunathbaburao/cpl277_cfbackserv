@@ -55,7 +55,8 @@ if ('development' == app.get('env')) {
 /*POSTGRESQL*/
 
 // Connection string for PostgreSQL - **Needs to be replaced**
-var conString = "postgres://rOo4g-PLjh_2r_Vc:zTgaaUZYu291t3dr@10.11.241.4:45266/k9MAD9ezQmj031uj";
+// Example : var conString = "postgres://rOo4g-PLjh_2r_Vc:zTgaaUZYu291t3dr@10.11.241.4:45266/k9MAD9ezQmj031uj";
+var conString = "<to-be-replaced>";
 
 // Connect to PostgreSQL
 var client = new pg.Client(conString);
