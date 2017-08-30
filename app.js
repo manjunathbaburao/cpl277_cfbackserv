@@ -28,7 +28,7 @@ var cfenv = require("cfenv");
 var mongoUrl = cf_svc.get_mongo_url();
 var rabbitUrl = cf_svc.get_rabbit_url();
 
-//Import the schema to store reviews
+//Import the reviews model
 //<Import the model of review to be stored in MongoDB>
 
 //Import the service to send out tweets
