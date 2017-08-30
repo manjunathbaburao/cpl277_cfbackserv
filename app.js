@@ -17,22 +17,22 @@ var path = require("path");
 var cfenv = require("cfenv");
 
 //Add modules for the backing services we will use
-<Import module for Postgres>
-<Import module for MongoDB>
-<Import module for RabbitMQ>
+//<Import module for Postgres>
+//<Import module for MongoDB>
+//<Import module for RabbitMQ>
 
 //Gather all the Environment variables from VCAP
-<Import module to read VCAP environment variables>
+//<Import module to read VCAP environment variables>
 
 //Retrieve the URLs for MongoDB and RabbitMQ
 var mongoUrl = cf_svc.get_mongo_url();
 var rabbitUrl = cf_svc.get_rabbit_url();
 
 //Import the schema to store reviews
-<Import the model of review to be stored in MongoDB>
+//<Import the model of review to be stored in MongoDB>
 
 //Import the service to send out tweets
-<Import the service which will send reviews to Twitter>
+//<Import the service which will send reviews to Twitter>
 
 // Set Express app parameters
 app.set('port', process.env.PORT || 6000);
