@@ -7,4 +7,4 @@ applications:
   command: node app.js
   buildpack: nodejs_buildpack
   services:
-  - foodiemongo
+  - <Add MongoDB service instance name>
