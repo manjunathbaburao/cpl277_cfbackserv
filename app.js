@@ -73,11 +73,11 @@ client.query("DROP TABLE IF EXISTS restaurants");
 client.query("CREATE TABLE IF NOT EXISTS restaurants(rest_id serial primary key, rest_name varchar(100), cuisine varchar(30), location varchar(30) not null, num_reviews integer, rating real)");
 
 // Insert list of restaurants to Postgres
-client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Kuteera', 'South Indian', 'Jayanagar', 0, 0.0]);
-client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Chowmein', 'Chinese', 'Koramangala', 0, 0.0]);
-client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Chettinad', 'Andhra', 'Indiranagar', 0, 0.0]);
-client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Bella', 'Italian', 'Brigade Road', 0, 0.0]);
-client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Tandoor', 'Middle Eastern', 'Rajajinagar', 0, 0.0]);
+client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Rivea', 'French', 'Mandaly Bay', 0, 0.0]);
+client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Grand Lux Cafe', 'Continental', 'The Venetian', 0, 0.0]);
+client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Fin', 'Chinese', 'The Mirage', 0, 0.0]);
+client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['FiAMMA Italian Kitchen', 'Italian', 'MGM Grand', 0, 0.0]);
+client.query("INSERT INTO restaurants(rest_name, cuisine, location, num_reviews, rating) values($1, $2, $3, $4, $5)", ['Javiers', 'Mexican', 'Aria', 0, 0.0]);
 
 /*MONGODB*/
 
