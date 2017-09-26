@@ -12,9 +12,9 @@ var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
 var statics = require('serve-static');
-var http  = require("http");
-var path = require("path");
-var cfenv = require("cfenv");
+var http  = require('http');
+var path = require('path');
+var cfenv = require('cfenv');
 
 //Add modules for the backing services we will use
 //<Import module for Postgres>
