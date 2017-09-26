@@ -113,87 +113,92 @@ app.post("/hotels", function (req, res) {
   var review=req.body.feedback;
   var rating=req.body.ratinginput;
   
-  /*RABBITMQ*/
+  if (user && email && review && rating){
   
-  // Connect to RabbitMQ
-  amqp.connect(rabbitUrl, function(err, connect) {
+	  /*RABBITMQ*/
 	  
-	  // Create a channel
-	  connect.createChannel(function(err, channel) {
- 			var queue = 'reviews';
- 			var message = user +' just reviewed restaurant '+ name;
- 			
- 			// Check if queue exists
- 			channel.assertQueue(queue, {durable: false});
- 			
- 			// Push the message to the queue
- 			channel.sendToQueue(queue, new Buffer(message));
- 			console.log(" [x] Sent %s", message);
+	  // Connect to RabbitMQ
+	  amqp.connect(rabbitUrl, function(err, connect) {
+		  
+		  // Create a channel
+		  connect.createChannel(function(err, channel) {
+				var queue = 'reviews';
+				var message = user +' just reviewed restaurant '+ name;
+				
+				// Check if queue exists
+				channel.assertQueue(queue, {durable: false});
+				
+				// Push the message to the queue
+				channel.sendToQueue(queue, new Buffer(message));
+				console.log(" [x] Sent %s", message);
+				setTimeout(function() {connect.close();}, 500); // Wait
+		  });
+		
+		// Call the service to read from the queue and post to Twitter
+		tweet.posttweet();
 	  });
-	setTimeout(function() {connect.close();}, 500); // Wait
-	
-	// Call the service to read from the queue and post to Twitter
-	tweet.posttweet();
-  });
-  
-  // Get id of the selected restaurant
-  client.query('SELECT rest_id FROM restaurants WHERE (rest_name = $1 AND location = $2)',[name,loc], function(err, result1) {
-  	    if (err) {
-  	      return console.error('error running query', err);
-  	    }
-  	    
-  	    var id = JSON.stringify(result1.rows[0].rest_id);
-  	    
-  	    // Get the current number of reviews
-  	  	client.query('SELECT num_reviews FROM restaurants WHERE rest_id = $1',[id], function(err, result2) {
-  	  	    if (err) {
-  	  	      return console.error('error running query', err);
-  	  	    }
-  	  	    
-  	  	    var revnum = JSON.stringify(result2.rows[0].num_reviews);
-  	  	    
-  	  	    // Add to review number
-  	  	    revnum = Number(revnum) + 1;
-  	  	    
-  	  	    // Calculate the new rating
-  	  	    reviews.find({restaurantName:name}, function(err,revs){
-  	  	    	var rate;
-  	  	    	if (revs.length !== 0){
-  	  	    		
-  	  	    		var totalrating = 0;
-  	  	    		
-  	  	    		for (var i=0; i < revs.length; i++){
-  	  	    			
-  	  	    			totalrating = totalrating + Number(revs[i].rating); 
-  	  	    			
-  	  	    		}
-  	  	    		
-  	  	    		rate = ((totalrating+Number(rating))/revnum).toFixed(2);
-  	  	    		
-  	  	    	} else {
-  	  	    		
-  	  	    		rate = rating;
-  	  	    		
-  	  	    	}
-  	  	    	
-  	  	    	// Update the new rating and new review number into PostgreSQL
-  	  	    	client.query('UPDATE restaurants SET num_reviews = $1, rating = $2 WHERE rest_id = $3',[revnum, rate, id], function(err, result3) {
-  	    	  		if (err) {
-  	    	  	   		return console.error('error running query', err);
-  	    	  	   	}
+	  
+	  // Get id of the selected restaurant
+	  client.query('SELECT rest_id FROM restaurants WHERE (rest_name = $1 AND location = $2)',[name,loc], function(err, result1) {
+			if (err) {
+			  return console.error('error running query', err);
+			}
+			
+			var id = JSON.stringify(result1.rows[0].rest_id);
+			
+			// Get the current number of reviews
+			client.query('SELECT num_reviews FROM restaurants WHERE rest_id = $1',[id], function(err, result2) {
+				if (err) {
+				  return console.error('error running query', err);
+				}
+				
+				var revnum = JSON.stringify(result2.rows[0].num_reviews);
+				
+				// Add to review number
+				revnum = Number(revnum) + 1;
+				
+				// Calculate the new rating
+				reviews.find({restaurantName:name}, function(err,revs){
+					var rate;
+					if (revs.length !== 0){
+						
+						var totalrating = 0;
+						
+						for (var i=0; i < revs.length; i++){
+							
+							totalrating = totalrating + Number(revs[i].rating); 
+							
+						}
+						
+						rate = ((totalrating+Number(rating))/revnum).toFixed(2);
+						
+					} else {
+						
+						rate = rating;
+						
+					}
+					
+					// Update the new rating and new review number into PostgreSQL
+					client.query('UPDATE restaurants SET num_reviews = $1, rating = $2 WHERE rest_id = $3',[revnum, rate, id], function(err, result3) {
+						if (err) {
+							return console.error('error running query', err);
+						}
 
-  	    	  		// Create a new record in the review collection
-  	    	  	   	reviews.create({restaurantName: name, userName: user, userEmail: email, review: review, rating: rating}, function(err, details){
-  	    	  	   		if (err) {  	    	  	   			
-  	    	  	   			return console.error('error updating collection', err);
-  	    	  	   		}
-  	    	  	   		res.redirect('/');
-  	    	  	   	});
-    	  	    });
-  	  	    });
-  	  	}); 
-  });
-
+						// Create a new record in the review collection
+						reviews.create({restaurantName: name, userName: user, userEmail: email, review: review, rating: rating}, function(err, details){
+							if (err) {  	    	  	   			
+								return console.error('error updating collection', err);
+							}
+							res.redirect('/');
+						});
+					});
+				});
+			}); 
+	  });
+  }
+  else {
+	 res.redirect('/'); 
+  }
 });
 
 // Create and run the express server 
