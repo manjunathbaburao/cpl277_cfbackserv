@@ -131,7 +131,7 @@ app.post("/hotels", function (req, res) {
 				// Push the message to the queue
 				channel.sendToQueue(queue, new Buffer(message));
 				console.log(" [x] Sent %s", message);
-				setTimeout(function() {connect.close();}, 500); // Wait
+				setTimeout(function() {connect.close();}, 1000); // Wait
 		  });
 		
 		// Call the service to read from the queue and post to Twitter
